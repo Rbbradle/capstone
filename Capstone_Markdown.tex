@@ -1,0 +1,466 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Capital Bikeshare System Analysis},
+            pdfauthor={Ross Bradley},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Capital Bikeshare System Analysis}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Ross Bradley}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{October 15, 2018}
+
+
+\begin{document}
+\maketitle
+
+\subsection{Introduction}\label{introduction}
+
+\section{Washington D.C. Bike Share
+Analysis}\label{washington-d.c.-bike-share-analysis}
+
+``Bike sharing systems are new generation of traditional bike rentals
+where whole process from membership, rental and return back has become
+automatic. Through these systems, user is able to easily rent a bike
+from a particular position and return back at another position.
+Currently, there are about over 500 bike-sharing programs around the
+world which is composed of over 500 thousands bicycles. Today, there
+exists great interest in these systems due to their important role in
+traffic, environmental and health issues.
+
+Apart from interesting real world applications of bike sharing systems,
+the characteristics of data being generated by these systems make them
+attractive for the research. Opposed to other transport services such as
+bus or subway, the duration of travel, departure and arrival position is
+explicitly recorded in these systems. This feature turns bike sharing
+system into a virtual sensor network that can be used for sensing
+mobility in the city. Hence, it is expected that most of important
+events in the city could be detected via monitoring these data." -
+\href{https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset}{UC -
+Irvine}
+
+Below is a proposition to analyze a dataset provided by the Capital
+BikeShare system will be the foundation of my Capstone Project for
+Springboard's Intro to Data Science course. This dataset provides
+information on the number of users, date information, and the weather
+details broken down by hour and day. The data was collected between 2011
+and 2012 in the Washington D.C. area.
+
+\subsection{Proposition}\label{proposition}
+
+A company needs to know its bottom line. Using the data above, I plan to
+predict with confidence the company's average number of users moving
+forward. Capital Bikeshare system will find this information important
+to know to predict their revenue. With a confident prediction, the
+company will have an estimate of how many riders will use their service
+and have a baseline of how much revenue they can expect to generate.
+Knowing your expected returns allows a company to know how much and when
+they can take risks.
+
+The idea is to take the dataset and identify what effect each weather
+condition has on rider turnout. Does heavy rain keep people away more
+than 90 degree weather? How many registered users are guaranteed to ride
+each day? I'm proposing to use the data available to find the variables
+that have the strongest effect on user turnout and build a model to
+accurately give a count of users based on expected future weather
+patterns.
+
+\subsection{Data \& Variables}\label{data-variables}
+
+There are 2 datasets (daily and hourly) we have to analyze and 16
+variables in the original sets. We are provided 2 calendar years of D.C.
+weather data and the daily or hourly count of users on the company's
+bikes on each interval given the dataset. Because we care more about the
+overarching picture, our focus will be on the daily dataset.
+
+7 of our variables are in regards to \textbf{time and date}. This
+includes the date, the day of the week, if it were a holiday, if it were
+a workday, month, season, and year (0 for 2011 and 1 for 2012). 5
+variables define the \textbf{weather}: temperature, ``real feel''
+temperature, weather situation put into 4 categories based on level of
+severity, humididy, and windspeed. Lastly we have 3 variables
+categorizing each interval's \textbf{user count}, broken out by number
+of registered riders, casual riders, and the sum of the two.
+
+Our output variable and the focus of the project will be the
+\textbf{count}. This is the sum of both the registered and casual
+columns which gives the total number of riders in the time interval. Our
+function will primarily be built off weather and date variables. Our
+initial assumption being that weather and date both play a role in
+predicting the daily number of riders.
+
+\section{Data wrangling}\label{data-wrangling}
+
+We are lucky to be working with a dataset that only has 1 missing value.
+We had a 0 value humidity on 1 date on the daily dataset. Luckily, this
+value could be calculated and entered based on the data from the hourly
+dataset. No assumptions needed to be made about the missing value since
+the formula for how the humidity on the daily dataset was the average of
+humidity values for the day in the hourly dataset.
+
+The season, year, month, hour, weekday, workingday, and weather
+situation are all collected as integer values between 0 and their
+respective maximum levels. We must provide code to R so that these
+values are interpreted as categorical instead of numerical numbers. The
+season column has had its original values converted from 1-4 to
+``Spring'', ``Summer'', etc. for added clarity.
+
+2 additional rows were created, tempC and tempF. The initial temperature
+variable is a proportion calculated by the data collector. The
+proportion has been reconverted to the real temperature in Celcius and
+Fahrenheit for clarity.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Updating Season Columns}
+\KeywordTok{as.character}\NormalTok{(bike.share}\OperatorTok{$}\NormalTok{season,}\DataTypeTok{stringsAsFactors=}\OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{winter.vec <-}\StringTok{ }\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season }\OperatorTok{==}\StringTok{"1"}
+\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season[winter.vec] <-}\StringTok{ "Winter"}
+
+\NormalTok{spring.vec <-}\StringTok{ }\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season }\OperatorTok{==}\StringTok{"2"}
+\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season[spring.vec] <-}\StringTok{ "Spring"}
+
+\NormalTok{summer.vec <-}\StringTok{ }\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season }\OperatorTok{==}\StringTok{"3"}
+\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season[summer.vec] <-}\StringTok{ "Summer"}
+
+\NormalTok{fall.vec<-}\StringTok{ }\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season }\OperatorTok{==}\StringTok{"4"}
+\NormalTok{bike.share}\OperatorTok{$}\NormalTok{season[fall.vec] <-}\StringTok{ "Fall"}
+
+
+\CommentTok{#Updating temp column to degrees in Fahrenheit}
+\NormalTok{temp.form <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  output <-}\StringTok{ }\NormalTok{((x}\OperatorTok{*}\DecValTok{47}\NormalTok{)}\OperatorTok{-}\DecValTok{8}\NormalTok{)}\OperatorTok{*}\NormalTok{(}\DecValTok{9}\OperatorTok{/}\DecValTok{5}\NormalTok{)}\OperatorTok{+}\DecValTok{32}
+  \KeywordTok{return}\NormalTok{(output)}
+\NormalTok{\}}
+
+\NormalTok{bike.share}\OperatorTok{$}\NormalTok{temp <-}\StringTok{ }\KeywordTok{temp.form}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{temp)}
+
+\CommentTok{#Updating hum column to percentages}
+\NormalTok{temp.hum <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  output <-}\StringTok{ }\NormalTok{(x}\OperatorTok{*}\DecValTok{100}\NormalTok{)}
+  \KeywordTok{return}\NormalTok{(output)}
+\NormalTok{\}}
+
+\NormalTok{bike.share}\OperatorTok{$}\NormalTok{hum <-}\StringTok{ }\KeywordTok{temp.hum}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{hum)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Data Story}\label{data-story}
+
+We start by looking at some of the direct correlations between the
+variables and the count of riders to see which has the most direct
+effect on rider count:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tempcorr <-}\StringTok{ }\KeywordTok{cor.test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{tempF, }\DataTypeTok{y =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{cnt, }\DataTypeTok{method =} \StringTok{"spearman"}\NormalTok{)}
+\NormalTok{windcorr <-}\StringTok{ }\KeywordTok{cor.test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{windspd, }\DataTypeTok{y =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{cnt, }\DataTypeTok{method =} \StringTok{"spearman"}\NormalTok{)}
+\NormalTok{humcorr <-}\StringTok{ }\KeywordTok{cor.test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{hum, }\DataTypeTok{y =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{cnt, }\DataTypeTok{method =} \StringTok{"spearman"}\NormalTok{)}
+\NormalTok{sitcorr <-}\StringTok{ }\KeywordTok{cor.test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{weathersit, }\DataTypeTok{y =}\NormalTok{ bike.share}\OperatorTok{$}\NormalTok{cnt, }\DataTypeTok{method =} \StringTok{"spearman"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{windcorr}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Spearman's rank correlation rho
+## 
+## data:  bike.share$windspd and bike.share$cnt
+## S = 79243000, p-value = 2.969e-09
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## -0.217197
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{humcorr}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Spearman's rank correlation rho
+## 
+## data:  bike.share$hum and bike.share$cnt
+## S = 71888000, p-value = 0.004792
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##        rho 
+## -0.1042218
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tempcorr}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Spearman's rank correlation rho
+## 
+## data:  bike.share$tempF and bike.share$cnt
+## S = 24607000, p-value < 2.2e-16
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## 0.6220345
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sitcorr}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Spearman's rank correlation rho
+## 
+## data:  bike.share$weathersit and bike.share$cnt
+## S = 82817000, p-value = 7.111e-14
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##        rho 
+## -0.2720974
+\end{verbatim}
+
+One can see that temperature has the strongest and only seemingly
+positive correlation. The rest are negative. A closer look at the
+visualizations of the data may prove helpful in understanding their
+relationship.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(ggpmisc)}
+\CommentTok{#Total Riders by humidity.}
+\CommentTok{#shows slight negative trend. High temperature is above the line, cool is below.}
+
+\KeywordTok{ggplot}\NormalTok{(bike.share, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{hum, }\DataTypeTok{y=}\NormalTok{cnt, }\DataTypeTok{col =}\NormalTok{ temp))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{"Humidity (%)"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Total Riders"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_color_gradientn}\NormalTok{(}\DataTypeTok{colors =} \KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{9}\NormalTok{, }\StringTok{"YlOrRd"}\NormalTok{))}\OperatorTok{+}
+\StringTok{  }\CommentTok{#facet_grid(weathersit~.)+}
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{formula =}\NormalTok{ y }\OperatorTok{~}\StringTok{ }\NormalTok{x)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Capstone_Markdown_files/figure-latex/unnamed-chunk-5-1.pdf}
+The chart above shows that humidity trends slightly negatively with
+total riders. Colored by temperature, here we can see that high
+temperatures are above our trend line and lower temperatures are mostly
+below. This could mean that temperature correlates positively with rider
+count.
+
+Let's continue to review temperature as a variable to predict total
+riders in a day. The below chart will plot total riders in a given day.
+We think that temperature will play a role, but but also break down the
+points by season.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Total Riders by temperature, following a log function of the data. }
+\CommentTok{#Slight trend noticed that very high T is below the trend line}
+\CommentTok{# y = -167 + 78.5x}
+\KeywordTok{library}\NormalTok{(ggpmisc)}
+\KeywordTok{ggplot}\NormalTok{(bike.share, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{temp, }\DataTypeTok{y=}\NormalTok{cnt, }\DataTypeTok{col =}\NormalTok{ hum))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{"Temp (F)"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Total Riders"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{formula =}\NormalTok{ y}\OperatorTok{~}\NormalTok{x)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{stat_poly_eq}\NormalTok{(}\DataTypeTok{parse =}\NormalTok{T, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{label=}\NormalTok{ ..eq.label..), }\DataTypeTok{formula =}\NormalTok{ y}\OperatorTok{~}\NormalTok{x)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Capstone_Markdown_files/figure-latex/unnamed-chunk-6-1.pdf}
+We can see that temperature tends to trend upwards, but we know a 1:1
+correlation can't exist. Eventually it will get too hot for bike
+sharing! Because we know this isn't a perfect relationship, let's look
+at the data given a cubic function to estimate the outcome. We also want
+to include the weather situation in these visualizations to see how
+harsher weather can effect the rider count. We would suspect that level
+1 would be higher up where level 3 would yield less riders.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Same as above but with a cubic function showing that as temperature increases too much we have a negative trend!}
+\CommentTok{# y = 1460 -153x + 6.51x^2 - .0492x^3}
+\NormalTok{formula <-}\StringTok{ }\NormalTok{y }\OperatorTok{~}\StringTok{ }\KeywordTok{poly}\NormalTok{(x,}\DecValTok{3}\NormalTok{, }\DataTypeTok{raw =} \OtherTok{TRUE}\NormalTok{)}
+
+\KeywordTok{ggplot}\NormalTok{(bike.share, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{temp, }\DataTypeTok{y=}\NormalTok{cnt, }\DataTypeTok{col =}\NormalTok{ weathersit))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \KeywordTok{factor}\NormalTok{(weathersit)))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{"Temperature (F)"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Total Riders"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\CommentTok{#scale_color_gradientn(colors = brewer.pal(9, "YlOrRd"))+}
+\StringTok{  }\CommentTok{#facet_grid(weathersit~.)+}
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"glm"}\NormalTok{, }\DataTypeTok{formula =}\NormalTok{ formula)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{stat_poly_eq}\NormalTok{(}\DataTypeTok{parse =}\NormalTok{T, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{label=}\NormalTok{ ..eq.label..), }\DataTypeTok{formula =}\NormalTok{ formula)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Capstone_Markdown_files/figure-latex/unnamed-chunk-7-1.pdf}
+From the above chart we see that after the temperature reaches
+\textasciitilde{}75 degrees our total number of bikers tends to
+decrease. We can also see that weather categories 1 and 2 are both above
+and below the line of best fit. Category 3 is under the curve in all
+instances which is what we expected.
+
+What is very interesting is that even with a cubic function, the data is
+very far parsed. There must be more variables that come into play when
+people choose to go ride. Let's investigate further.
+
+Next we will visualize the average wind speed of the day against the
+total rider count.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#windspeed verse count}
+\KeywordTok{ggplot}\NormalTok{(bike.share, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{bike.share}\OperatorTok{$}\NormalTok{windspd, }\DataTypeTok{y =}\NormalTok{ cnt))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{formula =}\NormalTok{ y}\OperatorTok{~}\NormalTok{x)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{),}
+        \DataTypeTok{axis.line.x=}\KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{axis.line.y=}\KeywordTok{element_line}\NormalTok{()) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Linear Model Fitted to Data"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Capstone_Markdown_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Here we see a slight negative trend here as well. Temperature seems to
+be our best indicator but if we combine these variables together we may
+have a clear picture.
+
+\section{Ideas for the future}\label{ideas-for-the-future}
+
+A deeper dive into the data could have shown a more clear predictor of
+the data.
+
+\section{Conclusion}\label{conclusion}
+
+
+\end{document}
